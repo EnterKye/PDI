@@ -20,9 +20,9 @@
             <a href="/demo/"><cite>导入</cite></a>
         </div>
     </div>
-    <div class="layui-container layui-form" style="padding:30px;">
+    <div class="layui-container" style="padding:30px;">
        <div class="layui-card">
-           <div class="layui-card-header">数据添加
+           <div class="layui-card-header layui-form">数据添加
                <span>&nbsp;<a href="#" id="uploadFile" style="color:blue;">批量上传</a></span>
                <div class="layui-input-inline" style="float:right;">
                    <input type="radio" name="types" value="主机" lay-filter="dataType" title="主机" checked="">
@@ -35,34 +35,40 @@
                    <div class="layui-inline">
                        <label class="layui-form-label">资产号</label>
                        <div class="layui-input-inline">
-                           <input type="text" name="PcAssetNum" lay-verify="required" autocomplete="off" class="layui-input">
+                           <input type="text" name="PcAssetNum" lay-verify="title" autocomplete="off" class="layui-input">
                        </div>
                    </div>
                    <div class="layui-inline">
                        <label class="layui-form-label">序列号</label>
                        <div class="layui-input-inline">
-                           <input type="text" name="PCsno" lay-verify="required" autocomplete="off" class="layui-input">
+                           <input type="text" name="PcSno" lay-verify="required" autocomplete="off" class="layui-input">
                        </div>
-                   </div>                  
+                   </div>  
+                   <div class="layui-inline">
+                       <label class="layui-form-label">管理编号</label>
+                       <div class="layui-input-inline">
+                           <input type="text" name="PcSno" lay-verify="required" autocomplete="off" class="layui-input">
+                       </div>
+                   </div>                     
                </div>
 
                <div class="layui-form-item">
                    <div class="layui-inline">
                        <label class="layui-form-label">CPU</label>
                        <div class="layui-input-inline">
-                           <input type="text" name="PCcpu" lay-verify="required" autocomplete="off" class="layui-input">
+                           <input type="text" name="PcCpu"  autocomplete="off" class="layui-input">
                        </div>
                    </div>
                    <div class="layui-inline">
                        <label class="layui-form-label">内存</label>
                        <div class="layui-input-inline">
-                           <input type="text" name="PCmemory" lay-verify="required" autocomplete="off" class="layui-input">
+                           <input type="text" name="PcMemory"  autocomplete="off" class="layui-input">
                        </div>
                    </div>
                    <div class="layui-inline">
                        <label class="layui-form-label">硬盘</label>
                        <div class="layui-input-inline">
-                           <input type="text" name="PChdd" lay-verify="required" autocomplete="off" class="layui-input">
+                           <input type="text" name="PcHdd" autocomplete="off" class="layui-input">
                        </div>
                    </div>
                </div>
@@ -71,33 +77,34 @@
                    <div class="layui-inline">
                        <label class="layui-form-label">物理地址</label>
                        <div class="layui-input-inline">
-                           <input type="text" name="PCmac" lay-verify="required" autocomplete="off" class="layui-input">
+                           <input type="text" name="PcMac"  autocomplete="off" class="layui-input">
                        </div>
                    </div>
                    <div class="layui-inline">
                        <label class="layui-form-label">IP</label>
                        <div class="layui-input-inline">
-                           <input type="text" name="PCip" lay-verify="required" autocomplete="off" class="layui-input">
+                           <input type="text" name="PcIp" autocomplete="off" class="layui-input">
                        </div>
                    </div>
                </div>
                <div class="layui-form-item">
                    <div class="layui-inline">
-                       <label class="layui-form-label">硬件拉</label>
+                       <label class="layui-form-label">位置/硬件拉</label>
                        <div class="layui-input-inline">
-                           <input type="text" name="PCline" lay-verify="required" autocomplete="off" class="layui-input">
+                           <input type="text" name="PcLine" lay-verify="required" autocomplete="off" class="layui-input">
                        </div>
                    </div>
                    <div class="layui-inline">
                        <label class="layui-form-label">工位</label>
                        <div class="layui-input-inline">
-                           <input type="text" name="PCworks" lay-verify="required" autocomplete="off" class="layui-input">
+                           <input type="text" name="PcWorks" lay-verify="required" autocomplete="off" class="layui-input">
                        </div>
                    </div>
                </div>
                <div class="layui-form-item">
                    <div class="layui-input-block">                 
                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="PCBtn">立即提交</button>
+                       <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                    </div>
                </div>
 
@@ -107,7 +114,7 @@
                    <div class="layui-inline">
                        <label class="layui-form-label">资产号</label>
                        <div class="layui-input-inline">
-                           <input type="text" name="printAssetNum" lay-verify="required" autocomplete="off" class="layui-input">
+                           <input type="text" name="printAssetNum" lay-verify="title" autocomplete="off" class="layui-input">
                        </div>
                    </div>
                    <div class="layui-inline">
@@ -208,7 +215,7 @@
                    <div class="layui-inline">
                        <label class="layui-form-label">位置</label>
                        <div class="layui-input-inline">
-                           <input type="text" name="printAddress" lay-verify="required" autocomplete="off" class="layui-input">
+                           <input type="text" name="scannerlocation" lay-verify="required" autocomplete="off" class="layui-input">
                        </div>
                    </div>
                </div>
@@ -270,7 +277,7 @@
                 exts: 'xls|xlsx',
                 auto: true,
                 done: function (res) {
-        
+
                     if (res != "-1") {
                         layer.msg("已成功上传" + res + "条记录");
                     }
@@ -278,7 +285,22 @@
                         layer.msg("上传失败");
                     }
                 }
-            })        
+            });
+            form.on('submit(PCBtn)', function (data) {
+                layer.alert(JSON.stringify(data.field), {
+                    title: '最终的提交信息'
+                })
+                console.log(JSON.stringify(data.field["PcAssetNum"]));
+                $.ajax()
+                return false;
+            });
+            form.verify({
+                title: function (value) {
+                    if (value.length < 11) {
+                        return '资产号至少得输入完整啊'
+                    }
+                }
+            })
         });       
     </script>
 </body>
