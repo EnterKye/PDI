@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>NPOI</id>
+    <version>2.5.1</version>
+    <title>NPOI</title>
+    <authors>NPOI Contributors</authors>
+    <owners>NPOI Contributors</owners>
+    <licenseUrl>https://www.nuget.org/packages/NPOI/2.5.1/license</licenseUrl>
+    <projectUrl>https://github.com/tonyqus/npoi</projectUrl>
+    <iconUrl>https://api.nuget.org/v3-flatcontainer/npoi/2.5.1/icon</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Bug Fixes
+- #302 Deleted text is stilll extracted from Word document
+- #283 XWPFTableCell.GetParagraphArray(0) always return null
+- #256 ISheet.CopyRow() throws NullReferenceException
+- #187 customHeight attribute of row for SXSSFWorkbook wrong
+- #225 Infinite Loop in Substitute.ReplaceAllOccurrences on empty searchStr
+- #199 SXSSFCell: numeric value is serialized with CurrentCulture rules
+- #141 XSSFFont.FontHeight setting bug
+- #165 Excel warns if we use a font without setting its size
+- #203 Add XWPFRun.AddSvg
+- #200 Optimizations and bugfixes of SXSSF logic
+- #198 Add XWPFStyles.GetStyleWithName(string styleName)
+- #325 Fix XSSFDataValidationHelper.CreateValidation to use all CellRangeAddresses.</description>
+    <summary>.NET port of Apache POI. 
+NPOI can read and write xls (Excel 97-2003), xlsx(Excel 2007+) and docx(Word 2007+)</summary>
+    <copyright>Neuzilla</copyright>
+    <tags>xlsx xls Excel Word docx office ole</tags>
+    <dependencies>
+      <group targetFramework="Unsupported0.0">
+        <dependency id="System.Configuration.ConfigurationManager" version="4.5.0" />
+        <dependency id="System.Drawing.Common" version="4.5.0" />
+        <dependency id="SharpZipLib" version="1.2.0" />
+        <dependency id="Portable.BouncyCastle" version="1.8.6" />
+      </group>
+      <group targetFramework=".NETFramework4.5">
+        <dependency id="SharpZipLib" version="1.2.0" />
+        <dependency id="Portable.BouncyCastle" version="1.8.6" />
+      </group>
+      <group targetFramework=".NETFramework4.0">
+        <dependency id="SharpZipLib" version="[0.86.0]" />
+        <dependency id="Portable.BouncyCastle" version="1.8.6" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

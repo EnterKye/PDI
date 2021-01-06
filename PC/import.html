@@ -23,24 +23,25 @@
     <div class="layui-container layui-form" style="padding:30px;">
        <div class="layui-card">
            <div class="layui-card-header">数据添加
+               <span>&nbsp;<a href="#" id="uploadFile" style="color:blue;">批量上传</a></span>
                <div class="layui-input-inline" style="float:right;">
-                       <input type="radio" name="types" value="主机" lay-filter="dataType" title="主机" checked="">
+                   <input type="radio" name="types" value="主机" lay-filter="dataType" title="主机" checked="">
                    <input type="radio" name="types" value="打印机" lay-filter="dataType" title="打印机">
                    <input type="radio" name="types" value="扫描仪" lay-filter="dataType" title="扫描仪">
                </div>
            </div>
-           <div class="layui-card-body layui-form" id="pc" style="line-height: 70px; box-shadow: 10px 10px 5px #888888;">
+           <div class="layui-card-body layui-form" id="pc" style="line-height: 30px; box-shadow: 10px 10px 5px #888888;">
                <div class="layui-form-item">
                    <div class="layui-inline">
                        <label class="layui-form-label">资产号</label>
                        <div class="layui-input-inline">
-                           <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input">
+                           <input type="text" name="PcAssetNum" lay-verify="required" autocomplete="off" class="layui-input">
                        </div>
                    </div>
                    <div class="layui-inline">
                        <label class="layui-form-label">序列号</label>
                        <div class="layui-input-inline">
-                           <input type="text" name="email" lay-verify="email" autocomplete="off" class="layui-input">
+                           <input type="text" name="PCsno" lay-verify="required" autocomplete="off" class="layui-input">
                        </div>
                    </div>                  
                </div>
@@ -49,19 +50,19 @@
                    <div class="layui-inline">
                        <label class="layui-form-label">CPU</label>
                        <div class="layui-input-inline">
-                           <input type="text" name="number" lay-verify="required|number" autocomplete="off" class="layui-input">
+                           <input type="text" name="PCcpu" lay-verify="required" autocomplete="off" class="layui-input">
                        </div>
                    </div>
                    <div class="layui-inline">
                        <label class="layui-form-label">内存</label>
                        <div class="layui-input-inline">
-                           <input type="text" name="date" id="date" lay-verify="date" autocomplete="off" class="layui-input">
+                           <input type="text" name="PCmemory" lay-verify="required" autocomplete="off" class="layui-input">
                        </div>
                    </div>
                    <div class="layui-inline">
                        <label class="layui-form-label">硬盘</label>
                        <div class="layui-input-inline">
-                           <input type="tel" name="url" lay-verify="url" autocomplete="off" class="layui-input">
+                           <input type="text" name="PChdd" lay-verify="required" autocomplete="off" class="layui-input">
                        </div>
                    </div>
                </div>
@@ -70,13 +71,13 @@
                    <div class="layui-inline">
                        <label class="layui-form-label">物理地址</label>
                        <div class="layui-input-inline">
-                           <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input">
+                           <input type="text" name="PCmac" lay-verify="required" autocomplete="off" class="layui-input">
                        </div>
                    </div>
                    <div class="layui-inline">
                        <label class="layui-form-label">IP</label>
                        <div class="layui-input-inline">
-                           <input type="text" name="email" lay-verify="email" autocomplete="off" class="layui-input">
+                           <input type="text" name="PCip" lay-verify="required" autocomplete="off" class="layui-input">
                        </div>
                    </div>
                </div>
@@ -84,73 +85,90 @@
                    <div class="layui-inline">
                        <label class="layui-form-label">硬件拉</label>
                        <div class="layui-input-inline">
-                           <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input">
+                           <input type="text" name="PCline" lay-verify="required" autocomplete="off" class="layui-input">
                        </div>
                    </div>
                    <div class="layui-inline">
                        <label class="layui-form-label">工位</label>
                        <div class="layui-input-inline">
-                           <input type="text" name="email" lay-verify="email" autocomplete="off" class="layui-input">
+                           <input type="text" name="PCworks" lay-verify="required" autocomplete="off" class="layui-input">
                        </div>
                    </div>
                </div>
                <div class="layui-form-item">
                    <div class="layui-input-block">                 
-                       <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                       <button type="submit" class="layui-btn" lay-submit="" lay-filter="PCBtn">立即提交</button>
                    </div>
                </div>
 
            </div>
-           <div id="print" class="layui-card-body layui-form" style="line-height: 70px; box-shadow: 10px 10px 5px #888888; display:none;" >
+           <div id="print" class="layui-card-body layui-form" style="line-height: 30px; box-shadow: 10px 10px 5px #888888; display:none;" >
                <div class="layui-form-item">
                    <div class="layui-inline">
                        <label class="layui-form-label">资产号</label>
                        <div class="layui-input-inline">
-                           <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input">
+                           <input type="text" name="printAssetNum" lay-verify="required" autocomplete="off" class="layui-input">
                        </div>
                    </div>
                    <div class="layui-inline">
                        <label class="layui-form-label">序列号</label>
                        <div class="layui-input-inline">
-                           <input type="text" name="email" lay-verify="email" autocomplete="off" class="layui-input">
+                           <input type="text" name="printSn" lay-verify="required" autocomplete="off" class="layui-input">
                        </div>
-                   </div>      
+                   </div>  
+                   <div class="layui-inline">
+                       <label class="layui-form-label">ISD编号</label>
+                       <div class="layui-input-inline">
+                           <input type="text" name="isdNum" lay-verify="required" autocomplete="off" class="layui-input">
+                       </div>
+                   </div>    
                </div>
                <div class="layui-form-item">
+                   
                    <div class="layui-inline">
-                       <label class="layui-form-label">型号</label>
+                       <label class="layui-form-label">机器型号</label>
                        <div class="layui-input-inline">
-                           <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input">
-                       </div>
-                   </div>
-
-               </div>
-               <div class="layui-form-item">
-                   <div class="layui-inline">
-                       <label class="layui-form-label">楼层</label>
-                       <div class="layui-input-inline">
-                           <select name="floor">
-                               <option value="">请选择</option>
-                               <option value="ESL-A-1F" selected="">ESL-A-1F</option>
-                               <option value="ESL-A-1.5F">ESL-A-1.5F</option>
-                               <option value="ESL-A-2F">ESL-A-2F</option>
-                               <option value="ESL-C-1F">ESL-C-1F</option>
-                               <option value="ESL-C-2F">ESL-C-2F</option>
-                               <option value="ESL-C-3F">ESL-C-3F</option>
-                               <option value="ESL-C-4F">ESL-C-4F</option>
-                           </select>
+                           <input type="text" name="printTypes" lay-verify="required" autocomplete="off" class="layui-input">
                        </div>
                    </div>
                    <div class="layui-inline">
-                       <label class="layui-form-label">位置</label>
+                       <label class="layui-form-label">名称</label>
                        <div class="layui-input-inline">
-                           <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input">
+                           <input type="text" name="printName" lay-verify="required" autocomplete="off" class="layui-input">
+                       </div>
+                   </div>
+               </div>
+               <div class="layui-form-item">
+                   <div class="layui-inline">
+                       <label class="layui-form-label">购买日期</label>
+                       <div class="layui-input-inline">
+                           <input type="text" name="buyTimer" lay-verify="required" autocomplete="off" class="layui-input">
+                       </div>
+                   </div>
+               </div>
+               <div class="layui-form-item">
+                   <div class="layui-inline">
+                       <label class="layui-form-label">存放位置</label>
+                       <div class="layui-input-inline">
+                           <input type="text" name="printLocation" lay-verify="required" autocomplete="off" class="layui-input">
+                       </div>
+                   </div>
+                   <div class="layui-inline">
+                       <label class="layui-form-label">管理担当</label>
+                       <div class="layui-input-inline">
+                           <input type="text" name="printUser" lay-verify="required" autocomplete="off" class="layui-input">
+                       </div>
+                   </div>
+                   <div class="layui-inline">
+                       <label class="layui-form-label">状态</label>
+                       <div class="layui-input-inline">
+                           <input type="text" name="printStates" lay-verify="required" autocomplete="off" class="layui-input">
                        </div>
                    </div>
                </div>
                <div class="layui-form-item">
                    <div class="layui-input-block">
-                       <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                       <button type="submit" class="layui-btn" lay-submit="" lay-filter="printBtn">立即提交</button>
                    </div>
                </div>
            </div>
@@ -159,7 +177,7 @@
                    <div class="layui-inline">
                        <label class="layui-form-label">资产号</label>
                        <div class="layui-input-inline">
-                           <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input">
+                           <input type="text" name="scannerAsset" lay-verify="required" autocomplete="off" class="layui-input">
                        </div>
                    </div>
                </div>
@@ -167,7 +185,7 @@
                    <div class="layui-inline">
                        <label class="layui-form-label">型号</label>
                        <div class="layui-input-inline">
-                           <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input">
+                           <input type="text" name="scannerName" lay-verify="required" autocomplete="off" class="layui-input">
                        </div>
                    </div>
                </div>
@@ -175,7 +193,7 @@
                    <div class="layui-inline">
                        <label class="layui-form-label">楼层</label>
                        <div class="layui-input-inline">
-                           <select name="floor">
+                           <select name="scannerFloor">
                                <option value="">请选择</option>
                                <option value="ESL-A-1F" selected="">ESL-A-1F</option>
                                <option value="ESL-A-1.5F">ESL-A-1.5F</option>
@@ -190,25 +208,42 @@
                    <div class="layui-inline">
                        <label class="layui-form-label">位置</label>
                        <div class="layui-input-inline">
-                           <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input">
+                           <input type="text" name="printAddress" lay-verify="required" autocomplete="off" class="layui-input">
                        </div>
                    </div>
                </div>
                <div class="layui-form-item">
                    <div class="layui-input-block">
-                       <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                       <button type="submit" class="layui-btn" lay-submit="" lay-filter="scannerBtn">立即提交</button>
                    </div>
                </div>
            </div>
         </div>
     </div>
+    <div class="layui-upload" id="Uppc" style="display:none;">
+        <button type="button" class="layui-btn layui-btn-normal" id="test8">选择文件</button>
+        <button type="button" class="layui-btn" id="test9">开始上传</button>
+    </div>
+
+    <div id='Upprint' style="display : none;">
+        <div style="text-align:center"><br />上传打印机内容</div>
+    </div>
+    <div id='Upscanner' style="display : none;">
+        <div style="text-align:center"><br />上传扫描仪内容</div>
+    </div>
+    <div id='info' style="display : none;">
+        <div style="text-align:center"><br />注意事项</div>     
+    </div>
+    
     <script src="../layui/jquery-3.4.1.min.js"></script>
     <script src="../layui/layui.js" charset="utf-8"></script>
     <script>
-        layui.use(['element', 'form', 'layer'], function () {
+        layui.use(['element', 'form', 'layer','upload'], function () {
             var element = layui.element,
                 form = layui.form,
-                layer = layui.layer;
+                layer = layui.layer,
+                upload = layui.upload;
+            //单选切换页面
             layui.form.on('radio(dataType)', function (data) {
                 switch (data.value) {
                     case "打印机":
@@ -228,7 +263,23 @@
                         break;
                 }
             })
-        });
+            upload.render({
+                elem: '#uploadFile',
+                url: '../Data/uploadFile.ashx',
+                accept: 'file',
+                exts: 'xls|xlsx',
+                auto: true,
+                done: function (res) {
+        
+                    if (res != "-1") {
+                        layer.msg("已成功上传" + res + "条记录");
+                    }
+                    else {
+                        layer.msg("上传失败");
+                    }
+                }
+            })        
+        });       
     </script>
 </body>
 </html>
