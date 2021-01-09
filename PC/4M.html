@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>4M变动</title>
+    <title>List</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -11,22 +11,149 @@
         .layui-card {
             margin-bottom: 0px;
         }
-        
     </style>
 </head>
-<body>
+<body style="background-color:#f2f2f2">
     <div class="layui-card layui-card-header">
         <div class="layui-breadcrumb" style="visibility: visible;">
             <a href="/">首页</a>
-            <a href="/demo/"><cite>4M</cite></a>
+            <a href="/demo/"><cite>4M变动</cite></a>
+        </div>
+    </div>
+    <div class="layui-fluid" style="padding:20px;">
+        <div class="layui-card">
+           <form class="layui-form layui-form-pane">
+                <div class="layui-card-body">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">资产号</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="PcAssetNum" id="PcAssetNum" lay-verify="title" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">类型</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="PcAssetNum" id="PcAssetNum" lay-verify="title" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="background-color:yellow;">新位置</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="PcAssetNum" id="PcAssetNum" lay-verify="title" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="background-color: yellow;">新工位</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="PcSno" lay-verify="required" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="background-color: yellow;">状态</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="PcSno" lay-verify="required" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">  
+                        <div class="layui-inline">
+                            <label class="layui-form-label">备注</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="PcReMarks" autocomplete="off" class="layui-input" />
+                            </div>
+                        </div>
+                        
+                        <div class="layui-inline">
+                            <button type="button" class="layui-btn">保存</button>
+                            <button type="button" class="layui-btn layui-btn-primary">重置</button>
+                        </div>             
+                    </div>
+                </div>               
+          </form>
+        </div>
+       <hr />
+        <div class="layui-card layui-form-pane">     
+            
+            <div class="layui-card-body">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label" style="background-color:lightyellow">搜索资产号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="selectAssetNum" autocomplete="off" class="layui-input" />
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label" style="background-color:lightyellow;">搜索日期</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="selectDate" id="date" autocomplete="off" class="layui-input" />
+                          
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                       
+                        <div class="layui-input-inline">
+                            <button type="button" class="layui-btn layui-btn-normal">搜索</button>
+                        </div>
+                    </div>
+                </div>
+                <table class="layui-hide" id="FourMList"></table>
+                <script type="text/html" id="toolbar">
+                    <div class="layui-btn-container">
+                        <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="AddData">添加</button> 
+                    </div>
+                </script>
+            </div>
         </div>
     </div>
 
     <script src="../layui/jquery-3.4.1.min.js"></script>
     <script src="../layui/layui.js" charset="utf-8"></script>
     <script>
-        layui.use('element', function () {
-            var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        layui.use(['element', 'form', 'table', 'layer'], function () {
+            var element = layui.element,
+                form = layui.form,
+                table = layui.table,
+                layer = layui.layer;
+
+            table.render({
+                elem: '#FourMList',
+                toolbar: 'toolbar',
+                title: '4M变动',
+                defaultToolBar: [],
+                cellMinWidth: 80,
+                url: '../Data/FourMList.ashx?action=FourM',
+                cols: [[
+                    { field: 'assetNum', title: '资产编号', align: 'center', fixed: 'left' },
+                    { field: 'assettype', title: '设备', aligin: 'center' },
+                    { field: 'moveUser', title: '移动担当', align: 'center' },
+                    { field: 'movelocation', title: '位置', align: 'center' },
+                    { field: 'moveWorks', title: '工位', align: 'center' },
+                    { field: 'moveTimes', title: '时间', align: 'center' },
+                    { field: 'states', title: '状态', align: 'center' }
+                ]],
+                id: 'FourMList',
+                page: true,
+                loading: true,
+                height: 'full-200',
+                limit: 20,
+                text: { none: '暂无相关数据' },
+                parseData: function (res) {
+                    console.log(res);
+                    return {
+                        "code": 0,
+                        "msg": res.message,
+                        "count": res.count,
+                        "data": res.data
+                    };
+                },
+                done: function (res) {
+
+                }
+            })
         });
     </script>
 </body>

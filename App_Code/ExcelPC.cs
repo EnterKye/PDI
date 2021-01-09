@@ -48,6 +48,10 @@ public class ExcelPC
     /// </summary>
     public string works { get; set; }
     /// <summary>
+    /// 状态
+    /// </summary>
+    public string states { get; set; }
+    /// <summary>
     /// 导入数据
     /// </summary>
     public int count { get; set; }

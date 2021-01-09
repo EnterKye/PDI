@@ -54,6 +54,7 @@ public class NPOIHelper
                     bool hasValue = false;
                     foreach (int j in columns)
                     {
+                        //NPOI.XSSF.UserModel.XSSFCell
                         ICell cell = sheet.GetRow(i).GetCell(j);
                         if (cell == null)
                         {

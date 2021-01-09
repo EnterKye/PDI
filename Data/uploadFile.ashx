@@ -35,6 +35,7 @@ public class uploadFile : IHttpHandler {
                     case "扫描仪.xlsx":
                         filePath = HttpContext.Current.Server.MapPath("../Files/") + fileName;
                         file.SaveAs(filePath);
+                        Scanner(context);
                         break;
                     default:
                         break;
@@ -58,7 +59,12 @@ public class uploadFile : IHttpHandler {
     private void PC(HttpContext context)
     {
         DataTable dt = NPOIHelper.ExcelToTable(filePath);
+       
+        //DataTable dt = NPOIOprateExcel.ExcelUtility.ExcelToDataTable(filePath, true);
+             
         ArrayList listSql = new ArrayList();
+        ArrayList repeatNum = new ArrayList();
+        Hashtable ht = new Hashtable();
         ExcelPC parameter = new ExcelPC();
         foreach (DataRow dr in dt.Rows)
         {
@@ -71,9 +77,21 @@ public class uploadFile : IHttpHandler {
             parameter.mac = dr["物理地址"].ToString();
             parameter.ip = dr["IP地址"].ToString();
             parameter.location = dr["位置/硬件拉"].ToString();
-            parameter.works = dr["工位"].ToString();           
-            listSql.Add("insert into PcList(assetNum,assetType,sn,departmentNum,cpu,memory,hdd,mac,ip,location,works) values('" + parameter.assetNum + "','主机','" + parameter.sn + "','" + parameter.departmentNum + "','" + parameter.cpu + "','" + parameter.memory + "','" + parameter.hdd + "','" + parameter.mac + "','" + parameter.ip + "','" + parameter.location + "','" + parameter.works + "')");
-            parameter.count += 1;
+            parameter.works = dr["工位"].ToString();
+            parameter.states = dr["状态"].ToString();
+            //如果资产号重复,则更新
+            string isAssetNum = "select assetNum from PcList where assetNum ='" + dr["资产号"].ToString() + "'";
+            IDataReader drd = db.ExecuteReader("SqlServer", isAssetNum);
+            if (drd.Read()) 
+            {
+                //资产重复,保存信息回显给用户
+                repeatNum.Add(dr["资产号"].ToString());
+            }
+            else
+            {
+                listSql.Add("insert into PcList(assetNum,assetType,sn,departmentNum,cpu,memory,hdd,mac,ip,location,works,states) values('" + parameter.assetNum + "','主机','" + parameter.sn + "','" + parameter.departmentNum + "','" + parameter.cpu + "','" + parameter.memory + "','" + parameter.hdd + "','" + parameter.mac + "','" + parameter.ip + "','" + parameter.location + "','" + parameter.works + "','" + parameter.states + "')");
+                parameter.count += 1;
+            }
         }
         Boolean result = db.ExcuteSqlTran("SqlServer", listSql);
 
@@ -83,7 +101,11 @@ public class uploadFile : IHttpHandler {
         }
         else
         {
-            context.Response.Write(JsonConvert.SerializeObject(parameter.count));
+            //实际上传数量+重复数据
+            ht.Add("repeat",repeatNum);
+            ht.Add("reality", parameter.count);
+            context.Response.Write(JsonConvert.SerializeObject(ht));
+            
         }
     }
 
@@ -95,6 +117,8 @@ public class uploadFile : IHttpHandler {
     {
         DataTable dt = NPOIHelper.ExcelToTable(filePath);
         ArrayList listSql = new ArrayList();
+        ArrayList repeatNum = new ArrayList();
+        Hashtable ht = new Hashtable();
         ExcelPrint print=new ExcelPrint();
         foreach (DataRow dr in dt.Rows)
         {
@@ -103,12 +127,33 @@ public class uploadFile : IHttpHandler {
             print.ISDNum = dr["ISD编号"].ToString();
             print.Types = dr["机器型号"].ToString();
             print.Name = dr["名称"].ToString();
-            print.Timer = Convert.ToDateTime(dr["购买日期"].ToString());
+            //if (dr["购买日期"].ToString() == "") 
+            //{
+            //    print.Timer = DateTime.Parse("");
+            //}
+            //else
+            //{ 
+            //    print.Timer = DateTime.ParseExact(dr["购买日期"].ToString(), "yyyyMMdd", System.Globalization.CultureInfo.CurrentCulture);
+            //}
+            string a = dr["购买日期"].ToString();
+            print.Timer = dr["购买日期"].ToString() == "" ? new Nullable<DateTime>() : DateTime.ParseExact(dr["购买日期"].ToString(), "yyyyMMdd", System.Globalization.CultureInfo.CurrentUICulture);
             print.location = dr["存放位置"].ToString();
             print.User = dr["管理担当"].ToString();
             print.states = dr["状态"].ToString();
-            listSql.Add("insert into PcList(assetNum,assetType,sn,departmentNum,printTypes,printNames,buyTimer,works,location,states) values('" + print.assetNum + "','打印机','" + print.sn + "','" + print.ISDNum + "','" + print.Types + "','" + print.Name + "','" + print.Timer + "','" + print.location + "','" + print.User + "','" + print.states + "')");
-            print.count += 1;
+
+            string isAssetNum = "select assetNum from PcList where assetNum ='" + dr["资产号"].ToString() + "'";
+            IDataReader drd = db.ExecuteReader("SqlServer", isAssetNum);
+            if (drd.Read())
+            {
+                //资产重复,保存信息回显给用户
+                repeatNum.Add(dr["资产号"].ToString());
+            }
+            else
+            {
+                listSql.Add("insert into PcList(assetNum,assetType,sn,departmentNum,printTypes,printNames,buyTimer,works,location,states) values('" + print.assetNum + "','打印机','" + print.sn + "','" + print.ISDNum + "','" + print.Types + "','" + print.Name + "','" + print.Timer + "','" + print.location + "','" + print.User + "','" + print.states + "')");
+                print.count += 1;
+            }
+            
         }
         Boolean result = db.ExcuteSqlTran("SqlServer", listSql);
 
@@ -118,10 +163,61 @@ public class uploadFile : IHttpHandler {
         }
         else
         {
-            context.Response.Write(JsonConvert.SerializeObject(print.count));
+            ht.Add("repeat", repeatNum);
+            ht.Add("reality", print.count);
+            context.Response.Write(JsonConvert.SerializeObject(ht));
         }
     }
 
+    /// <summary>
+    /// 扫描仪
+    /// </summary>
+    /// <param name="context"></param>
+    private void Scanner(HttpContext context)
+    {
+        DataTable dt = NPOIHelper.ExcelToTable(filePath);
+        ArrayList listSql = new ArrayList();
+        ArrayList repeatNum = new ArrayList();
+        Hashtable ht = new Hashtable();
+        ExcelScanner scanner = new ExcelScanner();
+        foreach (DataRow dr in dt.Rows)
+        {
+            scanner.AssetNum = dr["资产号"].ToString();
+            scanner.Sn = dr["序列号"].ToString();
+            scanner.Types = dr["型号"].ToString();
+            scanner.Adm= dr["ADM编号"].ToString();
+            scanner.BuyTimer = dr["购入日期"].ToString() == "" ? new Nullable<DateTime>() : DateTime.ParseExact(dr["购入日期"].ToString(), "yyyyMMdd", System.Globalization.CultureInfo.CurrentUICulture);
+            scanner.Location = dr["存放位置"].ToString();
+            scanner.User = dr["管理担当"].ToString();
+            scanner.States = dr["状态"].ToString();
+
+            string isAssetNum = "select assetNum from PcList where assetNum ='" + dr["资产号"].ToString() + "'";
+            IDataReader drd = db.ExecuteReader("SqlServer", isAssetNum);
+            if (drd.Read())
+            {
+                //资产重复,保存信息回显给用户
+                repeatNum.Add(dr["资产号"].ToString());
+            }
+            else
+            {
+                listSql.Add("insert into PcList(assetNum,assetType,sn,printTypes,departmentNum,buyTimer,works,location,states) values('" + scanner.AssetNum + "','扫描仪','" + scanner.Sn + "','" + scanner.Types + "','" + scanner.Adm + "','" + scanner.BuyTimer + "','" + scanner.Location + "','" + scanner.User + "','" + scanner.States + "')");
+                scanner.count += 1;
+            }
+
+        }
+        Boolean result = db.ExcuteSqlTran("SqlServer", listSql);
+
+        if (!result) //false
+        {
+            context.Response.Write(JsonConvert.SerializeObject("-1"));
+        }
+        else
+        {
+            ht.Add("repeat", repeatNum);
+            ht.Add("reality", scanner.count);
+            context.Response.Write(JsonConvert.SerializeObject(ht));
+        }
+    }
     public bool IsReusable {
         get {
             return false;
