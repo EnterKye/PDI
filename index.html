@@ -20,9 +20,9 @@
             <div class="layui-logo">PDI后台管理</div>
             <ul class="layui-nav layui-layout-right">
                 <li class="layui-nav-item">
-                    <a href="javascript:;">
-                        <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                        刘钰
+                    <a href="javascript:;" id="apo">
+                        <!--<img src="http://t.cn/RCzsdCq" class="layui-nav-img">-->
+                        
                     </a>
                     <dl class="layui-nav-child">
                         <dd><a href="">基本资料</a></dd>
@@ -63,9 +63,13 @@
             var element = layui.element;
 
         });
-        /**
- * iframe自适应高度，height为手动设置的最小高度
- */
+        $.ajax({
+            type: "post",
+            url: 'Data/APO.ashx',
+            success: function (res) {
+                $("#apo").text(res);
+            }
+        })
         function initIframeHeight(height) {
             var userAgent = navigator.userAgent;
             var iframe = parent.document.getElementById("iframeMains");
@@ -86,12 +90,6 @@
                 $(iframe).height(realHeight);
             }
         }
-
-       
-        //window.onload = function () {
-        //    var ptd = window.parent.document.getElementById("iframeMains");
-        //    ptd.style.height = document.body.clientHeight;
-        //}
 
     </script>
 </body>

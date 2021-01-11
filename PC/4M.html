@@ -21,89 +21,96 @@
         </div>
     </div>
     <div class="layui-fluid" style="padding:20px;">
-        <div class="layui-card">
-           <form class="layui-form layui-form-pane">
-                <div class="layui-card-body">
+        <div class="layui-card" id="AddDiv" style="display:none;">
+            <form class="layui-form layui-form-pane" id="Fm">
+                <div class="layui-card-body layui-form">
                     <div class="layui-form-item">
                         <div class="layui-inline">
                             <label class="layui-form-label">资产号</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="PcAssetNum" id="PcAssetNum" lay-verify="title" autocomplete="off" class="layui-input">
+                                <input type="text" name="asssetNum" id="asssetNum" lay-verify="required" autocomplete="off" class="layui-input">
                             </div>
                         </div>
-                        <div class="layui-inline">
+                        <!--<div class="layui-inline">
                             <label class="layui-form-label">类型</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="PcAssetNum" id="PcAssetNum" lay-verify="title" autocomplete="off" class="layui-input">
+                                <input type="text" name="types" id="types"  autocomplete="off" class="layui-input">
                             </div>
-                        </div>
+                        </div>-->
                     </div>
                     <div class="layui-form-item">
                         <div class="layui-inline">
                             <label class="layui-form-label" style="background-color:yellow;">新位置</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="PcAssetNum" id="PcAssetNum" lay-verify="title" autocomplete="off" class="layui-input">
+                                <input type="text" name="newLocation" id="newLocation" lay-verify="required" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label" style="background-color: yellow;">新工位</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="PcSno" lay-verify="required" autocomplete="off" class="layui-input">
+                                <input type="text" name="newWorks" lay-verify="required" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label" style="background-color: yellow;">状态</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="PcSno" lay-verify="required" autocomplete="off" class="layui-input">
+                                <!--<input type="text" name="states" lay-verify="required" autocomplete="off" class="layui-input">-->
+                                <select name="states" lay-verify="required">
+                                    <option value="">请选择状态</option>
+                                    <option value="正常" selected="">正常</option>
+                                    <option value="NG">NG</option>
+                                    <option value="报废">报废</option>
+                                </select>
                             </div>
                         </div>
                     </div>
 
-                    <div class="layui-form-item">  
+                    <div class="layui-form-item">
                         <div class="layui-inline">
                             <label class="layui-form-label">备注</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="PcReMarks" autocomplete="off" class="layui-input" />
+                                <input type="text" name="remarks" autocomplete="off" class="layui-input" />
                             </div>
                         </div>
-                        
+
                         <div class="layui-inline">
-                            <button type="button" class="layui-btn">保存</button>
-                            <button type="button" class="layui-btn layui-btn-primary">重置</button>
-                        </div>             
+                            <button type="submit" class="layui-btn" lay-submit="" lay-filter="saveFourM">保存</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
                     </div>
-                </div>               
-          </form>
+                </div>
+            </form>
+
+            <hr />
         </div>
-       <hr />
         <div class="layui-card layui-form-pane">     
             
             <div class="layui-card-body">
                 <div class="layui-form-item">
                     <div class="layui-inline">
-                        <label class="layui-form-label" style="background-color:lightyellow">搜索资产号</label>
+                        <label class="layui-form-label">搜索资产号</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="selectAssetNum" autocomplete="off" class="layui-input" />
+                            <input type="text" name="selectAssetNum" id="selectAssetNum"   autocomplete="off" class="layui-input" />
                         </div>
                     </div>
                     <div class="layui-inline">
-                        <label class="layui-form-label" style="background-color:lightyellow;">搜索日期</label>
+                        <label class="layui-form-label">搜索日期</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="selectDate" id="date" autocomplete="off" class="layui-input" />
+                            <input type="text" name="selectDate" id="selectDate" lay-verify="date" autocomplete="off" class="layui-input" />
                           
                         </div>
                     </div>
                     <div class="layui-inline">
                        
                         <div class="layui-input-inline">
-                            <button type="button" class="layui-btn layui-btn-normal">搜索</button>
+                            <button class="layui-btn" data-type="reload" id="ReloadTable">搜索</button>
                         </div>
                     </div>
                 </div>
                 <table class="layui-hide" id="FourMList"></table>
                 <script type="text/html" id="toolbar">
                     <div class="layui-btn-container">
-                        <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="AddData">添加</button> 
+                        <button class="layui-btn layui-btn-sm layui-btn-normal" id="AddData">添加</button> 
                     </div>
                 </script>
             </div>
@@ -113,33 +120,37 @@
     <script src="../layui/jquery-3.4.1.min.js"></script>
     <script src="../layui/layui.js" charset="utf-8"></script>
     <script>
-        layui.use(['element', 'form', 'table', 'layer'], function () {
+        layui.use(['element', 'form', 'table', 'layer','laydate'], function () {
             var element = layui.element,
                 form = layui.form,
                 table = layui.table,
                 layer = layui.layer;
-
-            table.render({
+                laydate = layui.laydate;
+                laydate.render({
+                    elem: '#selectDate'
+                   , trigger: 'click'
+                });
+                table.render({
                 elem: '#FourMList',
-                toolbar: 'toolbar',
+                toolbar:'#toolbar',
                 title: '4M变动',
-                defaultToolBar: [],
                 cellMinWidth: 80,
-                url: '../Data/FourMList.ashx?action=FourM',
+                defaultToolbar:[],
+                url: '../Data/FourMList.ashx?action=FourM&timestamp=' + (new Date()).valueOf(),
                 cols: [[
                     { field: 'assetNum', title: '资产编号', align: 'center', fixed: 'left' },
                     { field: 'assettype', title: '设备', aligin: 'center' },
                     { field: 'moveUser', title: '移动担当', align: 'center' },
                     { field: 'movelocation', title: '位置', align: 'center' },
                     { field: 'moveWorks', title: '工位', align: 'center' },
-                    { field: 'moveTimes', title: '时间', align: 'center' },
+                    { field: 'moveTimes', title: '时间', align: 'center',templet:"<div>{{layui.util.toDateString(d.moveTimes,'yyyy-MM-dd HH:mm')}}</div>" },
                     { field: 'states', title: '状态', align: 'center' }
                 ]],
-                id: 'FourMList',
+                id:'FourMList',
                 page: true,
                 loading: true,
                 height: 'full-200',
-                limit: 20,
+                limit:20,
                 text: { none: '暂无相关数据' },
                 parseData: function (res) {
                     console.log(res);
@@ -151,10 +162,78 @@
                     };
                 },
                 done: function (res) {
-
+                    $("#AddData").click(function () {
+                        $("#AddDiv").slideToggle("slow");
+                    })                    
                 }
-            })
+                })
+                var $ = layui.$, active = {
+                    reload: function () {
+                        var asset = $("#selectAssetNum").val();
+                        var date = $("#selectDate").val();
+                        table.reload('FourMList', {
+                            page: { curr: 1 },
+                            where: {
+                                key: {
+                                    assetNum: asset,
+                                    writeTime: date
+                                }
+                            }
+                        }, "data");
+                    }
+                }
+                $("#ReloadTable").click(function () {
+                    var type = $(this).data('type');
+                    active[type] ? active[type].call(this) : '';
+                })
+                $("#assetNums").focus(function () {
+                    //获取当前文本框的值
+                    var curValue = $(this).val();
+                    onsole.log(curValue);
+                    //可以打印输入结果curValue
+                    if (curValue == this.defaultValue) {
+                        $(this).val("");
+                    }
+                });
+
+              
+                form.on('submit(saveFourM)', function (data) {
+                  
+                        $.ajax({
+                            type: 'post',
+                            url: '../Data/FourMList.ashx?action=saveFM',
+                            data: {
+                                "Data": JSON.stringify(data.field)
+                            },
+                            success: function (res) {            
+                                var obj = eval("(" + res + ")");
+                                if (obj.Result == "NoExist") {
+                                    layer.tips('资产不存在,请确认哦', '#asssetNum');
+                                }
+                                else if (obj.Result == "0") {
+                                    layer.msg("添加成功", { icon: 6 }, { time: 3000 });
+                                    table.reload('FourMList', {});
+                                    document.getElementById("Fm").reset();
+                                    layui.form.render();
+                                }
+                                else {
+                                    layer.msg("Error! Please try again", { icon: 5 });
+                                }
+                            },
+                            error: function (e) {
+                                layer.msg("Error! Please contact admin!", { icon: 2 });
+                            }
+                        })
+                 
+                   
+                    
+                    return false;
+                })
+
+               
         });
+        
+        
     </script>
 </body>
 </html>
