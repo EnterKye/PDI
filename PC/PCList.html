@@ -20,12 +20,28 @@
             <a href="/demo/"><cite>List</cite></a>
         </div>
     </div>
-
+    <div>
+        <ul class="flow-default" id="demo1"></ul>
+    </div>
     <script src="../layui/jquery-3.4.1.min.js"></script>
     <script src="../layui/layui.js" charset="utf-8"></script>
     <script>
-        layui.use('element', function () {
-            var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        layui.use('element','flow', function () {
+            var element = layui.element; 
+            var flow = layui.flow;
+
+            flow.load({
+                elem: '#demo1',
+                scrollElem: '#demo1',
+                done: function (page,next) {
+                    setTimeout(function () {
+                        var list = [];
+                        for (var i = 0; i < 8; i++) {
+                            lis.push('<li>' + ((page - 1) * 8 + i + 1) + '</li>');
+                        }
+                    })
+                }
+            })
         });
     </script>
 </body>

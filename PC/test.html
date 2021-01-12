@@ -8,64 +8,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="../layui/css/layui.css" media="all">
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
-    <style >
-        .layui-card {
-        margin-bottom:0px;
-        }
+    <style>
+      
     </style>
 </head>
-<body>
-
-    <div class="layui-card layui-card-header">
-        <div class="layui-breadcrumb" style="visibility: visible;">
-            <a href="/">首页</a>
-            <a href="/demo/"><cite>213</cite></a>
+<body style="background-color:#f2f2f2;">
+    <fieldset class="layui-elem-field layui-field-title" style="margin: 20px;">
+        <legend>全机种电脑信息 </legend>
+    </fieldset>
+ 
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space10" id="CreateDiv">
+            <!--后台获取最新的机种信息,并创建div-->
+            <!--<div class="layui-col-md2">
+                <div class="layui-card">
+                    <div class="layui-card-header">C01</div>
+                    <div class="layui-card-body">
+                        <span>总数：353</span>
+                    </div>
+                </div>
+            </div>-->
         </div>
-    </div>
-    <div style="padding:15px; background-color: #F2F2F2;">
-        <div class="layui-row layui-col-space15">
-            <div class="layui-col-md6">
-                <div class="layui-card">
-                    <div class="layui-card-header">卡片面板</div>
-                    <div class="layui-card-body">
-                        卡片式面板面板通常用于非白色背景色的主体内<br>
-                        从而映衬出边框投影
-                    </div>
-                </div>
-            </div>
-            <div class="layui-col-md6">
-                <div class="layui-card">
-                    <div class="layui-card-header">卡片面板</div>
-                    <div class="layui-card-body">
-                        结合 layui 的栅格系统<br>
-                        轻松实现响应式布局
-                    </div>
-                </div>
-            </div>
-            <div class="layui-col-md12">
-                <div class="layui-card">
-                    <div class="layui-card-header">标题</div>
-                    <div class="layui-card-body">
-                        内容
-                    </div>
-                </div>
-            </div>
-        </div>
+      
     </div>
 
-    
-
-   
+    <script src="../layui/jquery-3.4.1.min.js"></script>
     <script src="../layui/layui.js" charset="utf-8"></script>
     <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
     <script>
-        layui.use(['element', 'layer'], function () {
-            var element = layui.element;
-            var layer = layui.layer;
+        layui.use(['form', 'element','layer'], function () {
+            var element = layui.element,
+                form = layui.form,
+                layer = layui.layer;
+            //请求机种信息
+           
+            $.ajax({
+                url: "../Data/GetJz.ashx",
+                type: 'post',
 
-            //监听折叠
-         
-        });
+                success: function (res) {
+                  var xqo = eval('(' + res + ')');                               
+                        for (var p in xqo) {
+                            var Vdiv = "<div class='layui-col-md2'><div class='layui-card'><div class='layui-card-header'>" + xqo[p].Jz + "</div><div class='layui-card-body'><a href='#" + xqo[p].Num + "' style='color:blue;' id='"+xqo[p].Jz+"' onclick='GetId(this)'>数量:"+xqo[p].Num+"</a></div></div></div>"
+                            $("#CreateDiv").append(Vdiv);
+                        }      
+                },
+                error: function (res) {
+
+                }
+            })
+               
+            //$(".layui-row").on("click", "#L2", function () {
+            //    layer.msg("123");
+            //})
+            
+        })
+        function GetId(obj) {
+
+            var ID = obj.getAttribute("id");
+           
+            layer.open({
+                type: 1,
+                skin: 'layui-layer-demo',
+               
+                anim: 2,
+                area: ['500px', '300px'],
+                content:'内容'
+            })
+        }
+        //获取json数组长度
+        function getJsonLength(jsonData) {
+
+            var jsonLength = 0;
+
+            for (var item in jsonData) {
+
+                jsonLength++;
+
+            }
+
+            return jsonLength;
+
+        }
+        //for (var i = 1; i <= 7; i++) {
+        //    var Vdiv="<div class='layui-col-md2'><div class='layui-card'><div class='layui-card-header'>"+i+"</div><div class='layui-card-body'><a href='"+i+"' style='color:blue;'>点我查看详细</a></div></div></div>"
+        //    $("#CreateDiv").append(Vdiv);
+                   
+        //}
     </script>
 
 </body>
