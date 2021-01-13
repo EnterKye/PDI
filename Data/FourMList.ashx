@@ -127,9 +127,7 @@ public class FourMList : IHttpHandler,IRequiresSessionState {
     /// <returns></returns>
     public DataTable SqlJson(int PageNumber, int PageSize, out int i)
     {
-        int pages;
-        pages = PageSize * (PageNumber - 1);
-        string sql = "select tb_b.assetNum,assettype,moveUser,movelocation,moveWorks,moveTimes,tb_b.states from(" + "select *,row_number() over(order by id desc)num" + " from PcList as tb_a) as tb_b" + " inner join FourMList b on tb_b.assetNum=b.assetNum where num between " + ((PageNumber - 1) * PageSize + 1) + " and " + (PageNumber) * PageSize + " order by moveTimes desc";
+        string sql = "select tb_b.assetNum,assettype,moveUser,movelocation,moveWorks,moveTimes,states from(" + "select *,row_number() over(order by id desc)num" + " from FourMList as tb_a) as tb_b" + " inner join PcList b on tb_b.assetNum=b.assetNum where num between " + ((PageNumber - 1) * PageSize + 1) + " and " + (PageNumber) * PageSize + " order by moveTimes desc";       
         DataTable ds = db.ExcuteQuery("SqlServer", sql);
         string count = "select count(*) '数量' from FourMList";
         DataTable dt = db.ExcuteQuery("SqlServer", count);
@@ -169,11 +167,11 @@ public class FourMList : IHttpHandler,IRequiresSessionState {
         string sql = string.Empty;
         if (SqlWhere == "")
         {
-            sql = "select tb_b.assetNum,assettype,moveUser,movelocation,moveWorks,moveTimes,tb_b.states from(" + "select *,row_number() over(order by id desc)num" + " from PcList as tb_a) as tb_b" + " inner join FourMList b on tb_b.assetNum=b.assetNum where " + SqlWhere + " num between " + ((PageNumber - 1) * PageSize + 1) + " and " + (PageNumber) * PageSize + " order by moveTimes desc";
+            sql = "select tb_b.assetNum,assettype,moveUser,movelocation,moveWorks,moveTimes,states from(" + "select *,row_number() over(order by id desc )num" + " from FourMList as tb_a) as tb_b" + " inner join PcList b on tb_b.assetNum=b.assetNum where " + SqlWhere + " num between " + ((PageNumber - 1) * PageSize + 1) + " and " + (PageNumber) * PageSize + " order by moveTimes desc";
         }
         else
         {
-            sql = "select tb_b.assetNum,assettype,moveUser,movelocation,moveWorks,moveTimes,tb_b.states from(" + "select *,row_number() over(order by id desc)num" + " from PcList as tb_a) as tb_b" + " inner join FourMList b on tb_b.assetNum=b.assetNum where " + SqlWhere + " order by moveTimes desc";
+            sql = "select tb_b.assetNum,assettype,moveUser,movelocation,moveWorks,moveTimes,states from(" + "select *,row_number() over(order by id desc )num" + " from FourMList as tb_a) as tb_b" + " inner join PcList b on tb_b.assetNum=b.assetNum where " + SqlWhere + " order by moveTimes desc";
         }
         DataTable ds = db.ExcuteQuery("SqlServer", sql);
         string count = string.Empty;
