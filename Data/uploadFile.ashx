@@ -66,6 +66,14 @@ public class uploadFile : IHttpHandler {
         ArrayList repeatNum = new ArrayList();
         Hashtable ht = new Hashtable();
         ExcelPC parameter = new ExcelPC();
+        //如果位置不在Location表中,那么取消导入
+        string location = "select distinct location from location";
+        ArrayList locationArray = new ArrayList();//存储地址
+        IDataReader drLocation = db.ExecuteReader("SqlServer", location);
+        while (drLocation.Read())
+        {
+            locationArray.Add(drLocation["location"].ToString());
+        }
         foreach (DataRow dr in dt.Rows)
         {
             parameter.assetNum = dr["资产号"].ToString();
@@ -77,21 +85,36 @@ public class uploadFile : IHttpHandler {
             parameter.mac = dr["物理地址"].ToString();
             parameter.ip = dr["IP地址"].ToString();
             parameter.location = dr["位置/硬件拉"].ToString();
+            
             parameter.works = dr["工位"].ToString();
             parameter.states = dr["状态"].ToString();
+            parameter.manageUser = dr["管理担当"].ToString();
             //如果资产号重复,则更新
             string isAssetNum = "select assetNum from PcList where assetNum ='" + dr["资产号"].ToString() + "'";
             IDataReader drd = db.ExecuteReader("SqlServer", isAssetNum);
             if (drd.Read()) 
             {
                 //资产重复,保存信息回显给用户
-                repeatNum.Add(dr["资产号"].ToString());
+                repeatNum.Add(dr["资产号"].ToString());        
             }
             else
             {
-                listSql.Add("insert into PcList(assetNum,assetType,sn,departmentNum,cpu,memory,hdd,mac,ip,location,works,states) values('" + parameter.assetNum + "','主机','" + parameter.sn + "','" + parameter.departmentNum + "','" + parameter.cpu + "','" + parameter.memory + "','" + parameter.hdd + "','" + parameter.mac + "','" + parameter.ip + "','" + parameter.location + "','" + parameter.works + "','" + parameter.states + "')");
-                parameter.count += 1;
+                bool exists = ((IList)locationArray).Contains(parameter.location);
+                if (!exists)
+                {
+                    ht.Add("Non-compliant", parameter.assetNum);
+                }
+                else
+                {
+                    listSql.Add("insert into PcList(assetNum,assetType,sn,departmentNum,cpu,memory,hdd,mac,ip,location,works,states,ManagementUser) values('" + parameter.assetNum + "','主机','" + parameter.sn + "','" + parameter.departmentNum + "','" + parameter.cpu + "','" + parameter.memory + "','" + parameter.hdd + "','" + parameter.mac + "','" + parameter.ip + "','" + parameter.location + "','" + parameter.works + "','" + parameter.states + "','" + parameter.manageUser + "')");
+                    parameter.count += 1;
+                }
             }
+           
+            
+           
+           
+            
         }
         Boolean result = db.ExcuteSqlTran("SqlServer", listSql);
 
@@ -104,6 +127,7 @@ public class uploadFile : IHttpHandler {
             //实际上传数量+重复数据
             ht.Add("repeat",repeatNum);
             ht.Add("reality", parameter.count);
+            
             context.Response.Write(JsonConvert.SerializeObject(ht));
             
         }

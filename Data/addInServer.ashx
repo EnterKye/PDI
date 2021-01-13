@@ -46,6 +46,7 @@ public class addInServer : IHttpHandler {
             info.Add(JSONOutPut["PcLine"]);
             info.Add(JSONOutPut["PcWorks"]);
             info.Add(JSONOutPut["PcStates"]);
+            info.Add(JSONOutPut["PcUser"]);
             //查询资产号是否存在
             string isAssetNum = "select assetNum from PcList where assetNum ='" + info[0] + "'";
             IDataReader dr = db.ExecuteReader("SqlServer", isAssetNum);
@@ -56,7 +57,7 @@ public class addInServer : IHttpHandler {
             }
             else
             {
-                string sql = "insert into PcList(assetNum,assetType,sn,departmentNum,cpu,memory,hdd,mac,ip,location,works,states) values('" + info[0] + "','主机','" + info[1] + "','" + info[2] + "','" + info[3] + "','" + info[4] + "','" + info[5] + "','" + info[6] + "','" + info[7] + "','" + info[8] + "','" + info[9] + "','" + info[10] + "')";
+                string sql = "insert into PcList(assetNum,assetType,sn,departmentNum,cpu,memory,hdd,mac,ip,location,works,states,ManagementUser) values('" + info[0] + "','主机','" + info[1] + "','" + info[2] + "','" + info[3] + "','" + info[4] + "','" + info[5] + "','" + info[6] + "','" + info[7] + "','" + info[8] + "','" + info[9] + "','" + info[10] + "','" + info[11] + "')";
                 db.ExcuteSqlScalar("SqlServer", sql);
                 context.Response.Write("0");
             }

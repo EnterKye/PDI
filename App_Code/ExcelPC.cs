@@ -52,6 +52,10 @@ public class ExcelPC
     /// </summary>
     public string states { get; set; }
     /// <summary>
+    /// 管理担当
+    /// </summary>
+    public string manageUser { get; set; }
+    /// <summary>
     /// 导入数据
     /// </summary>
     public int count { get; set; }
