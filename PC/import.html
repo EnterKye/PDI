@@ -342,6 +342,9 @@
                 done: function (res) {
                     if (res != "-1") {
                         console.log(res["repeat"].length);
+
+
+
                         console.log(res["Non-compliant"]==undefined);//true
                         
                         layer.msg("已上传" + res["reality"] + "条记录！<br>重复数据:" + res["repeat"] + "！<br>地址异常:" + res["Non-compliant"] + " ", { time: 5000 });

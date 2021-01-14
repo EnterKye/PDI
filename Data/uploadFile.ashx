@@ -74,6 +74,8 @@ public class uploadFile : IHttpHandler {
         {
             locationArray.Add(drLocation["location"].ToString());
         }
+  
+        
         foreach (DataRow dr in dt.Rows)
         {
             parameter.assetNum = dr["资产号"].ToString();
@@ -151,15 +153,6 @@ public class uploadFile : IHttpHandler {
             print.ISDNum = dr["ISD编号"].ToString();
             print.Types = dr["机器型号"].ToString();
             print.Name = dr["名称"].ToString();
-            //if (dr["购买日期"].ToString() == "") 
-            //{
-            //    print.Timer = DateTime.Parse("");
-            //}
-            //else
-            //{ 
-            //    print.Timer = DateTime.ParseExact(dr["购买日期"].ToString(), "yyyyMMdd", System.Globalization.CultureInfo.CurrentCulture);
-            //}
-            string a = dr["购买日期"].ToString();
             print.Timer = dr["购买日期"].ToString() == "" ? new Nullable<DateTime>() : DateTime.ParseExact(dr["购买日期"].ToString(), "yyyyMMdd", System.Globalization.CultureInfo.CurrentUICulture);
             print.location = dr["存放位置"].ToString();
             print.User = dr["管理担当"].ToString();
@@ -174,7 +167,13 @@ public class uploadFile : IHttpHandler {
             }
             else
             {
-                listSql.Add("insert into PcList(assetNum,assetType,sn,departmentNum,printTypes,printNames,buyTimer,works,location,states) values('" + print.assetNum + "','打印机','" + print.sn + "','" + print.ISDNum + "','" + print.Types + "','" + print.Name + "','" + print.Timer + "','" + print.location + "','" + print.User + "','" + print.states + "')");
+
+                //bool exists = ((IList)locationArray).Contains(parameter.location);
+                //if (!exists)
+                //{
+                //    ht.Add("Non-compliant", parameter.assetNum);
+                //}
+                listSql.Add("insert into PcList(assetNum,assetType,sn,departmentNum,printTypes,printNames,buyTimer,works,ManagementUser,states) values('" + print.assetNum + "','打印机','" + print.sn + "','" + print.ISDNum + "','" + print.Types + "','" + print.Name + "','" + print.Timer + "','" + print.location + "','" + print.User + "','" + print.states + "')");
                 print.count += 1;
             }
             

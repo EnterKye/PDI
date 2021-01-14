@@ -22,12 +22,6 @@ public partial class _Default : System.Web.UI.Page
     protected void Button1_Click(object sender, EventArgs e)
     {
 
-        string timer = Text1.Value;
-        //DateTime times = Convert.ToDateTime(timer);
-        DateTime? dt;
-        DateTime? date12 = timer == "" ? new Nullable<DateTime>() : DateTime.ParseExact(timer, "yyyyMMdd", System.Globalization.CultureInfo.CurrentCulture);       
-
-       
        
     }
 }
