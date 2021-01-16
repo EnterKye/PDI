@@ -33,30 +33,26 @@
                         <label class="layui-form-label">APO</label>
                         <div class="layui-input-inline">
                             <input type="text" name="apo" id="apo" autocomplete="off" class="layui-input">
-                        </div>
-                       
+                        </div>                       
                     </div>
 
                     <div class="layui-form-item">
                         <label class="layui-form-label">姓名</label>
                         <div class="layui-input-inline">
                             <input type="text" name="name" id="name" autocomplete="off" class="layui-input">
-                        </div>
-                       
+                        </div>                     
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">邮箱</label>
                         <div class="layui-input-inline">
                             <input type="text" name="email" id="email" autocomplete="off" class="layui-input">
                         </div>
-
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">权限</label>
                         <div class="layui-input-inline">
                             <input type="text" name="permission" id="permission" autocomplete="off" class="layui-input">
                         </div>
-
                     </div>
                 </form>
             </div>
@@ -124,11 +120,36 @@
                         content: $('#contentInfo'),
                         btn: ['确定', '取消'],
                         yes:function(index){
-                            
+                            $.ajax({
+                                type: "post",
+                                url: '../Data/updateUserInfo.ashx',
+                                data: {
+                                    id:data.id,
+                                    names: $("#name").val(),
+                                    emails: $("#email").val(),
+                                    permissions: $("#permission").val()
+                                },
+                                success: function (res) {
+                                    if (res == "0") {
+                                        layer.msg("更新成功");
+                                        layer.close(index);
+                                        table.render();
+                                    }
+                                },
+                                error: function (res) {
+                                        
+                                }
+                            })
                         },
                         success: function (layero,index) {
                             
                             $(".layui-layer-title").css("background-color", "black");
+                           
+                            $("#apo").val(data.apo);
+                            $("#apo").attr("disabled", "disabled");
+                            $("#name").val(data.name);
+                            $("#email").val(data.email);
+                            $("#permission").val(data.permission);
                         }
                     })
                 }

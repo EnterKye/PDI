@@ -13,7 +13,7 @@ public partial class _Default : System.Web.UI.Page
         List<tb_c> list = new List<tb_c>();
         list.Add(new tb_c() { jz = "456", sl = "123" });
 
-       
+       inp
     }
     public class tb_c
     {
@@ -22,14 +22,5 @@ public partial class _Default : System.Web.UI.Page
         public string count { get; set; }
         public string MyProperty { get; set; }
     }
-    protected void Button1_Click(object sender, EventArgs e)
-    {
-        string a = "p12";
-        location li = new location();
-        ArrayList locationArray = new ArrayList();
-        locationArray = li.GetLocation();
-        bool exists = ((IList)locationArray).Contains(a.ToUpper());
-
-       
-    }
+    
 }
