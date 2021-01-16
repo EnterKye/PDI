@@ -9,92 +9,133 @@
     <link rel="stylesheet" href="../layui/css/layui.css" media="all">
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
     <style>
-      
+
     </style>
 </head>
-<body style="background-color:#f2f2f2;">
-    <fieldset class="layui-elem-field layui-field-title" style="margin: 20px;">
-        <legend>全机种电脑信息 </legend>
-    </fieldset>
- 
-    <div class="layui-fluid">
-        <div class="layui-row layui-col-space10" id="CreateDiv">
-            <!--后台获取最新的机种信息,并创建div-->
-            <!--<div class="layui-col-md2">
-                <div class="layui-card">
-                    <div class="layui-card-header">C01</div>
-                    <div class="layui-card-body">
-                        <span>总数：353</span>
-                    </div>
-                </div>
-            </div>-->
+<body>
+    <div class="layui-card layui-card-header">
+        <div class="layui-breadcrumb" style="visibility: visible;">
+            <a href="/">首页</a>
+            <a href="/demo/"><cite>测试</cite></a>
         </div>
-      
     </div>
+    <div class="layui-fluid">
+        <table class="layui-hide" id="userList" lay-filter="userList"></table>
+        <script type="text/html" id="barDemo">
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </script>
 
+        <div id="contentInfo" style="display:none;margin:20px 0px 0px 10px">
+            <div>
+                <form class="layui-form">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">APO</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="apo" id="apo" autocomplete="off" class="layui-input">
+                        </div>
+                       
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">姓名</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="name" id="name" autocomplete="off" class="layui-input">
+                        </div>
+                       
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">邮箱</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="email" id="email" autocomplete="off" class="layui-input">
+                        </div>
+
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">权限</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="permission" id="permission" autocomplete="off" class="layui-input">
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <script src="../layui/jquery-3.4.1.min.js"></script>
     <script src="../layui/layui.js" charset="utf-8"></script>
     <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
     <script>
-        layui.use(['form', 'element','layer'], function () {
+        layui.use(['form', 'element','layer','table'], function () {
             var element = layui.element,
                 form = layui.form,
-                layer = layui.layer;
-            //请求机种信息
-           
-            $.ajax({
-                url: "../Data/GetJz.ashx",
-                type: 'post',
+                layer = layui.layer,
+                table = layui.table;
+                
+            table.render({
+                elem: '#userList',
+                url: '../Data/userList.ashx?action=FourM&timestamp=' + (new Date()).valueOf(),
+                title: '用户列表',
+                cols: [[
+                    {field:'id',title:'ID',align:'center' ,fixed: 'left',width:100, unresize: true, sort: true},
+                    { field: 'apo', title: 'APO', align: 'center'},
+                    { field: 'name', title: '姓名', align: 'center' },
+                    { field: 'email', title: '邮箱', align: 'center' },
+                    { field: 'permission', title: '权限', align: 'center' },
+                    { field: 'createTime', title: '创建时间', aign: 'center'},
+                    { title: '操作', toolbar: '#barDemo', align:'center',fixed: 'right' },
 
-                success: function (res) {
-                  var xqo = eval('(' + res + ')');                               
-                        for (var p in xqo) {
-                            var Vdiv = "<div class='layui-col-md2'><div class='layui-card'><div class='layui-card-header'>" + xqo[p].Jz + "</div><div class='layui-card-body'><a href='#" + xqo[p].Num + "' style='color:blue;' id='"+xqo[p].Jz+"' onclick='GetId(this)'>数量:"+xqo[p].Num+"</a></div></div></div>"
-                            $("#CreateDiv").append(Vdiv);
-                        }      
-                },
-                error: function (res) {
-
+                ]],
+                id: 'userList',
+                page: true,
+                cellMinWidth:80,
+                loading: true,
+                height: 'full-200',
+                limit: 20,
+                text: { none: '暂无相关数据' },
+                parseData: function (res) {
+                    return {
+                        "code": 0,
+                        "msg": res.message,
+                        "count": res.count,
+                        "data": res.data
+                    };
                 }
             })
-               
-            //$(".layui-row").on("click", "#L2", function () {
-            //    layer.msg("123");
-            //})
+
+            //监听行工具事件
+            table.on('tool(userList)', function (obj) {
+                var data = obj.data;
+                console.log(data.id)
+                if (obj.event === 'del') {
+                    layer.confirm('真的删除行么', function (index) {
+                        obj.del();
+                        layer.close(index);
+                    });
+                } else if (obj.event === 'edit') {
+                    layer.open({
+                        type: 1,
+                        title:'<span style="color:white;">信息</span>',
+                        skin: 'layui-layer-demo',
+                        closeBtn: 0,
+                        anim: 2,
+                        area:'400px',
+                        shadeClose: true,
+                        content: $('#contentInfo'),
+                        btn: ['确定', '取消'],
+                        yes:function(index){
+                            
+                        },
+                        success: function (layero,index) {
+                            
+                            $(".layui-layer-title").css("background-color", "black");
+                        }
+                    })
+                }
+            });
+
+        });
             
-        })
-        function GetId(obj) {
-
-            var ID = obj.getAttribute("id");
-           
-            layer.open({
-                type: 1,
-                skin: 'layui-layer-demo',
-               
-                anim: 2,
-                area: ['500px', '300px'],
-                content:'内容'
-            })
-        }
-        //获取json数组长度
-        function getJsonLength(jsonData) {
-
-            var jsonLength = 0;
-
-            for (var item in jsonData) {
-
-                jsonLength++;
-
-            }
-
-            return jsonLength;
-
-        }
-        //for (var i = 1; i <= 7; i++) {
-        //    var Vdiv="<div class='layui-col-md2'><div class='layui-card'><div class='layui-card-header'>"+i+"</div><div class='layui-card-body'><a href='"+i+"' style='color:blue;'>点我查看详细</a></div></div></div>"
-        //    $("#CreateDiv").append(Vdiv);
-                   
-        //}
     </script>
 
 </body>

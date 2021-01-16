@@ -8,16 +8,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="layui/css/layui.css" media="all">
     <style>
-        .layui-nav-tree .layui-this, .layui-nav-tree .layui-this > a, .layui-nav-tree .layui-nav-child dd.layui-this, .layui-nav-tree .layui-nav-child dd.layui-this a {
-            background-color: #393D49 !important;
-        }
-       
+            .layui-nav-tree >li >a {
+                background-color: #393D49 !important;
+            }
     </style>
 </head>
 <body class="layui-layout-body">
     <div class="layui-layout layui-layout-admin">
         <div class="layui-header">
             <div class="layui-logo">PDI后台管理</div>
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item"><a href="">Master导入</a></li>
+            </ul>
             <ul class="layui-nav layui-layout-right">
                 <li class="layui-nav-item">
                     <a href="javascript:;" id="apo">
@@ -39,14 +41,21 @@
                 <ul class="layui-nav layui-nav-tree" lay-filter="test">
                     <li class="layui-nav-item"><a href="./PC/4M.html" target="iframeMain">4M变动</a></li>
                     <li class="layui-nav-item"><a href="./PC/import.html" target="iframeMain">Master导入</a></li>
-                    <li class="layui-nav-item"><a href="./PC/PCList.html" target="iframeMain">LineData</a></li>
-                    <li class="layui-nav-item"><a href="./PC/test.html" target="iframeMain">仓库管理</a></li>
+                    <li class="layui-nav-item"><a href="./PC/PCList.html" target="iframeMain">全机种资产信息</a></li>
+                    <!--<li class="layui-nav-item"><a href="./PC/test.html" target="iframeMain">维护</a></li>-->
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">维护</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="./PC/4M.html" target="iframeMain">用户维护</a></dd>
+                            <dd><a href="./PC/test.html" target="iframeMain">Master维护</a></dd>
+                        </dl>
+                    </li>
                     <li class="layui-nav-item"><a href="">数据查询</a></li>
                 </ul>
             </div>
         </div>
 
-        <div class="layui-body">
+        <div class="layui-body" style="bottom:35px;">
             <!--<iframe src="./PC/iframeMain.html" frameborder="0" scrolling="no" id="iframeMains" name="iframeMain" style="width:100%;"></iframe>-->
             <iframe src="https://www.baidu.com/" frameborder="0"  id="iframeMains"  name="iframeMain" scrolling="auto" style="width:100%;height:99%;"  ></iframe>
         </div>

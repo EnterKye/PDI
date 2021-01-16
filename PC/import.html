@@ -173,7 +173,8 @@
                        <div class="layui-inline">
                            <label class="layui-form-label">存放位置</label>
                            <div class="layui-input-inline">
-                               <input type="text" name="PrintLocation" lay-verify="required" autocomplete="off" class="layui-input">
+                               <!--<input type="text" name="PrintLocation" lay-verify="required" autocomplete="off" class="layui-input">-->
+                               <select name="PrintLocation" id="PrintLocation" lay-verify="required" lay-search=""></select>  
                            </div>
                        </div>
                        <div class="layui-inline">
@@ -238,7 +239,8 @@
                        <div class="layui-inline">
                            <label class="layui-form-label">存放位置</label>
                            <div class="layui-input-inline">
-                               <input type="text" name="ScannerLocation" autocomplete="off" class="layui-input">
+                               <!--<input type="text" name="ScannerLocation" autocomplete="off" class="layui-input">-->
+                               <select name="ScannerLocation" id="ScannerLocation" lay-verify="required" lay-search=""></select> 
                            </div>
                        </div>
                      
@@ -315,14 +317,26 @@
                 success: function (data) {
                     if (data.length > 0) {
                         $("#PcLine").empty();
+                        $("#PrintLocation").empty();
+                        $("#ScannerLocation").empty();
+                        
                         $("#PcLine").append("<option value=''>直接选择或搜索选择</option>");
+                        $("#PrintLocation").append("<option value=''>直接选择或搜索选择</option>");
+                        $("#ScannerLocation").append("<option value=''>直接选择或搜索选择</option>");
                         for (var i = 0; i < data.length; i++) {
                             var item = data[i];
                             $("#PcLine").append("<option value=" + item + ">" + item + "</option>");
+                            $("#PrintLocation").append("<option value=" + item + ">" + item + "</option>");
+                            $("#ScannerLocation").append("<option value=" + item + ">" + item + "</option>");
                         }
                     } else {
                         $("#PcLine").empty();
+                        $("#PrintLocation").empty();
+                        $("#ScannerLocation").empty();
+
                         $("#PcLine").append("<option value=''>直接选择或搜索选择</option>");
+                        $("#PrintLocation").append("<option value=''>直接选择或搜索选择</option>");
+                        $("#ScannerLocation").append("<option value=''>直接选择或搜索选择</option>");
                 }
                         form.render('select');
                 }
@@ -340,14 +354,28 @@
                 exts: 'xls|xlsx',
                 auto: true,
                 done: function (res) {
+                    var Count;
+                    var RepeatArray=[];
+                    var AddressArray=[];
+                    for (var k in res) {
+                        if (res[k].types == "导入数") {
+                            Count = res[k].count;                            
+                        }
+                        if (res[k].types == "重复项") {                         
+                            RepeatArray.push(res[k].repeat);
+                        }
+                        if (res[k].types == "address" && res[k].address != null) {
+                            AddressArray.push(res[k].address);
+                        }
+                    }
                     if (res != "-1") {
-                        console.log(res["repeat"].length);
-
-
-
-                        console.log(res["Non-compliant"]==undefined);//true
-                        
-                        layer.msg("已上传" + res["reality"] + "条记录！<br>重复数据:" + res["repeat"] + "！<br>地址异常:" + res["Non-compliant"] + " ", { time: 5000 });
+                        var RepeatMsg = RepeatArray[0].length == 0 ? "无" : RepeatArray[0];                        
+                        if (AddressArray.length == 0) {
+                            layer.msg("已导入数据:" + Count + "条记录!<br/>重复数据" + RepeatMsg + "!<br/>", { time: 5000 });
+                        }
+                        else {
+                            layer.msg("已导入数据" + Count + "!<br/>重复数据" + RepeatMsg + "!<br/>地址异常:" + AddressArray.toLocaleString(), { time: 5000 });
+                        }
                     }
                     else {
                         layer.msg("上传失败", { time: 5000 });
@@ -362,9 +390,6 @@
                         "Data":JSON.stringify(data.field)
                     },
                     success: function (res) {
-                        //var index = layer.load(1, {
-                        //    shade: [0.1, '#fff']
-                        //});
                         if (res == "exist") {
                             layer.tips('资产已经存在,请确认哦', '#PcAssetNum');
                         }

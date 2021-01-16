@@ -18,17 +18,26 @@ public class GetJz : IHttpHandler,IRequiresSessionState {
             //else
             //{
                 string sql = "select distinct location,count(location)'num' from pclist group by location";
+                string depart = "select distinct a.location ,b.department from PcList a inner join Location b on a.location=b.location"; 
                 DataTable dt = db.ExcuteQuery("SqlServer", sql);
+                DataTable dts = db.ExcuteQuery("SqlServer", depart);
                 Hashtable ht = new Hashtable();
                 ArrayList al = new ArrayList();
-                
+                ArrayList department = new ArrayList();
                 if (dt.Rows.Count != 0)
                 {
                     foreach (DataRow dr in dt.Rows)
                     {
-                        //al.Add(dr["location"].ToString());
-                        //ht.Add(dr["location"].ToString(), dr["num"].ToString());
-                        al.Add(new title { Jz = dr["location"].ToString(), Num = dr["Num"].ToString() });
+                        foreach (DataRow drs in dts.Rows)
+                        { 
+                            //区分部门
+                            if (dr["location"].ToString() == drs["location"].ToString())
+                            {
+                                //DataRow对比
+                                al.Add(new title { Jz = dr["location"].ToString().ToUpper(), department = drs["department"].ToString().ToUpper(), Num = dr["Num"].ToString() });
+                            }
+                            
+                        }
                     }
                     context.Response.Write(JsonConvert.SerializeObject(al));
                 }
@@ -55,6 +64,10 @@ public class GetJz : IHttpHandler,IRequiresSessionState {
         /// 数量
         /// </summary>
         public string Num { get; set; }
+        /// <summary>
+        /// 部门
+        /// </summary>
+        public string department { get; set; }
     }
     public bool IsReusable {
         get {

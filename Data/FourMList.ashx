@@ -92,12 +92,7 @@ public class FourMList : IHttpHandler,IRequiresSessionState {
             Hashtable ht = new Hashtable();    
             if (dr.Read())
             {
-                         
-                //string isSql = string.Empty;
-                //for (int i = 0; i <= info.Count; i++)
-                //{
-                //    isSql += info[i] + ",";
-                //}
+                
                 string Inssql = "insert into FourMList values('" + info[0] + "','" + context.Session["apo"].ToString() + "','" + info[1] + "','" + info[2] + "',GetDate(),'" + info[4] + "')";
                 string Upsql = "update PcList set location='" + info[1] + "',works='" + info[2] + "',states='" + info[3] + "' where assetNum='" + info[0] + "'";
                 db.ExcuteSqlScalar("SqlServer", Inssql);

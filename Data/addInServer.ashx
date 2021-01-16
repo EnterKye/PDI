@@ -94,7 +94,7 @@ public class addInServer : IHttpHandler {
             }
             else
             {
-                string sql = "insert into PcList(assetNum,assetType,sn,departmentNum,printTypes,printNames,buyTimer,works,location,states) values('" + info[0] + "','打印机','" + info[1] + "','" + info[2] + "','" + info[3] + "','" + info[4] + "','" + info[5] + "','" + info[6] + "','" + info[7] + "','" + info[8] + "')";
+                string sql = "insert into PcList(assetNum,assetType,sn,departmentNum,printTypes,printNames,buyTimer,location,ManagementUser,states) values('" + info[0] + "','打印机','" + info[1] + "','" + info[2] + "','" + info[3] + "','" + info[4] + "','" + info[5] + "','" + info[6] + "','" + info[7] + "','" + info[8] + "')";
                 db.ExcuteSqlScalar("SqlServer", sql);
                 context.Response.Write("0");
             }
@@ -130,7 +130,7 @@ public class addInServer : IHttpHandler {
             }
             else
             {
-                string sql = "insert into PcList(assetNum,assetType,sn,printTypes,departmentNum,buyTimer,works,location,states) values('" + info[0] + "','扫描仪','" + info[1] + "','" + info[2] + "','" + info[3] + "','" + info[4] + "','" + info[5] + "','" + info[6] + "','" + info[7] + "')";
+                string sql = "insert into PcList(assetNum,assetType,sn,printTypes,departmentNum,buyTimer,location,ManagementUser,states) values('" + info[0] + "','扫描仪','" + info[1] + "','" + info[2] + "','" + info[3] + "','" + info[4] + "','" + info[5] + "','" + info[6] + "','" + info[7] + "')";
                 db.ExcuteSqlScalar("SqlServer", sql);
                 context.Response.Write("0");
             }

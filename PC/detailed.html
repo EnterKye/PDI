@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>List</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../layui/css/layui.css" media="all">
+</head>
+<body>
+    <div class="layui-fluid">
+        <table class="layui-hide" id="assetList"></table>
+    </div>
+    <script src="../layui/jquery-3.4.1.min.js"></script>
+    <script src="../layui/layui.js" charset="utf-8"></script>
+    <script src="../js/GetUrlId.js"></script>
+    <script type="text/javascript">
+        var id=getQueryString("id");
+        layui.use(['form', 'table', 'layer','element'], function () {
+            var form = layui.form,
+                table = layui.table,
+                layer = layui.layer,
+                element = layui.element;
+            table.render({
+                elem: "#assetList",
+                title: '资产列表',
+                url: '../Data/assetList.ashx?action=FourM&timestamp=' + (new Date()).valueOf(),
+                where: { id: id },
+                cols: [[
+                    { field: 'assetNum', title: '资产号', align: 'center', fixed: 'left',width:150 },
+                    { field: 'assettype', title: '类型', align: 'center' },
+                     { field: 'works', title: '工位', align: 'center' },
+                    { field: 'sn', title: '序列号', align: 'center',width:180 },
+                    { field: 'departmentNum', title: '管理编号', align: 'center',width:120 },
+                    { field: 'cpu', title: '处理器', align: 'center' },
+                    { field: 'memory', title: '内存', align: 'center',width:60 },
+                    { field: 'hdd', title: '硬盘', align: 'center',width:80 },
+                    { field: 'mac', title: '物理地址', align: 'center' },
+                    { field: 'ip', title: 'IP', align: 'center' },
+                  
+                   
+                    {field:'managementUser',title:'管理担当',align:'center',fixed:'right'}
+                ]],
+                id: 'assetList',
+                page: true,
+                cellMinWidth: 150,
+                loading: true,
+                height: 'full-50',
+                limit: 20,
+                text: { none: '暂无相关数据' },
+                parseData: function (res) {
+                  
+                    return {
+                        "code": 0,
+                        "msg": res.message,
+                        "count": res.count,
+                        "data": res.data
+                    };
+                }
+            })
+        })
+    </script>
+</body>
+</html>

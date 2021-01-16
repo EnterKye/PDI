@@ -13,36 +13,104 @@
         }
     </style>
 </head>
-<body>
+<body style="background-color:#f2f2f2;">
     <div class="layui-card layui-card-header">
         <div class="layui-breadcrumb" style="visibility: visible;">
             <a href="/">首页</a>
-            <a href="/demo/"><cite>List</cite></a>
+            <a href="/demo/"><cite>全机种资产列表</cite></a>
         </div>
     </div>
-    <div>
-        <ul class="flow-default" id="demo1"></ul>
+    <fieldset class="layui-elem-field layui-field-title" style="margin: 20px;">
+        <legend>LFP </legend>
+    </fieldset>
+
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space10" id="CreateDiv">
+            <!--后台获取最新的机种信息,并创建div-->
+        </div>
+
+    </div>
+    <fieldset class="layui-elem-field layui-field-title" style="margin: 20px;">
+        <legend>小P</legend>
+    </fieldset>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space10" id="CreateDivXP">
+            <!--后台获取最新的机种信息,并创建div-->
+        </div>
+
     </div>
     <script src="../layui/jquery-3.4.1.min.js"></script>
     <script src="../layui/layui.js" charset="utf-8"></script>
+    <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
     <script>
-        layui.use('element','flow', function () {
-            var element = layui.element; 
-            var flow = layui.flow;
+        layui.use(['form', 'element', 'layer'], function () {
+            var element = layui.element,
+                form = layui.form,
+                layer = layui.layer;
+            //请求机种信息
 
-            flow.load({
-                elem: '#demo1',
-                scrollElem: '#demo1',
-                done: function (page,next) {
-                    setTimeout(function () {
-                        var list = [];
-                        for (var i = 0; i < 8; i++) {
-                            lis.push('<li>' + ((page - 1) * 8 + i + 1) + '</li>');
+            $.ajax({
+                url: "../Data/GetJz.ashx",
+                type: 'post',
+
+                success: function (res) {
+                    console.log(res);
+                    var xqo = eval('(' + res + ')');
+                    for (var p in xqo) {
+                        if (xqo[p].department == "大P") {
+                            var Vdiv = "<div class='layui-col-md2'><div class='layui-card'><div class='layui-card-header'>" + xqo[p].Jz + "</div><div class='layui-card-body'><a href='#" + xqo[p].Num + "' style='color:blue;' id='" + xqo[p].Jz + "' onclick='GetId(this)'>数量:" + xqo[p].Num + "</a></div></div></div>"
+                            $("#CreateDiv").append(Vdiv);
                         }
-                    })
+                    }
+                    for (var p in xqo) {
+                        if (xqo[p].department == "小P") {
+                            var Vdiv = "<div class='layui-col-md2'><div class='layui-card'><div class='layui-card-header'>" + xqo[p].Jz + "</div><div class='layui-card-body'><a href='#" + xqo[p].Num + "' style='color:blue;' id='" + xqo[p].Jz + "' onclick='GetId(this)'>数量:" + xqo[p].Num + "</a></div></div></div>"
+                            $("#CreateDivXP").append(Vdiv);
+                        }
+                    }
+                },
+                error: function (res) {
+
                 }
             })
-        });
+
+            //$(".layui-row").on("click", "#L2", function () {
+            //    layer.msg("123");
+            //})
+
+        })
+        function GetId(obj) {
+
+            var ID = obj.getAttribute("id");
+
+          var index=  layer.open({
+                type: 2,
+                skin: 'layui-layer-demo',
+                maxmin:true,
+                anim: 2,
+                title: '详细',
+                area: ['95%', '90%'],
+                content: 'detailed.html?id='+ID
+          })
+          //layer.full(index);
+        }
+
+       
+        //获取json数组长度
+        function getJsonLength(jsonData) {
+
+            var jsonLength = 0;
+
+            for (var item in jsonData) {
+
+                jsonLength++;
+
+            }
+
+            return jsonLength;
+
+        }
     </script>
+
 </body>
 </html>

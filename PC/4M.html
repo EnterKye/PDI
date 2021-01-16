@@ -11,10 +11,11 @@
         .layui-card {
             margin-bottom: 0px;
         }
+
     </style>
 </head>
 <body style="background-color:#f2f2f2">
-    <div class="layui-card layui-card-header">
+    <div class="layui-card layui-card-header" id="123123">
         <div class="layui-breadcrumb" style="visibility: visible;">
             <a href="/">首页</a>
             <a href="/demo/"><cite>4M变动</cite></a>
@@ -42,7 +43,8 @@
                         <div class="layui-inline">
                             <label class="layui-form-label" style="background-color:yellow;">新位置</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="newLocation" id="newLocation" lay-verify="required" autocomplete="off" class="layui-input">
+                               
+                                <select name="newLocation" id="newLocation" lay-verify="required" lay-search=""></select>
                             </div>
                         </div>
                         <div class="layui-inline">
@@ -195,7 +197,25 @@
                         $(this).val("");
                     }
                 });
-
+                $.ajax({
+                    type: "post",
+                    url: "../Data/GetLocation.ashx",
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.length > 0) {
+                            $("#newLocation").empty();
+                            $("#newLocation").append("<option value=''>直接选择或搜索选择</option>");
+                            for (var i = 0; i < data.length; i++) {
+                                var item = data[i];
+                                $("#newLocation").append("<option value=" + item + ">" + item + "</option>");
+                            }
+                        } else {
+                            $("#newLocation").empty();
+                            $("#newLocation").append("<option value=''>直接选择或搜索选择</option>");                            
+                        }
+                        form.render('select');
+                    }
+                })
               
                 form.on('submit(saveFourM)', function (data) {
                   
